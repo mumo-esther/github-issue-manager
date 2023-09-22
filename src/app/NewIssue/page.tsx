@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from "react";
-import postNewIssue from "../api/githubAPI";
+import {postNewIssue} from "../api/githubAPI";
+import { useRouter } from "next/navigation";
 
 function NewIssue() {
   const [activeButton, setActiveButton] = useState("write");
@@ -8,6 +9,8 @@ function NewIssue() {
     title: "",
     body: "",
   });
+
+ const router = useRouter();
 
   const handleButtonClick = (button:any) => {
     setActiveButton(button);
@@ -29,6 +32,7 @@ function NewIssue() {
         title: "",
         body: "",
       });
+      router.push('/')
     } catch (error) {
       console.error("Error creating new issue:", error);
     }
