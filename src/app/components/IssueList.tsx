@@ -3,39 +3,80 @@ import IssueHeader from "./IssueHeader";
 import { fetchGitHubIssues } from "../api/githubAPI";
 import { Issue, IssueListProps } from "../interfaces/issueTypes";
 import IssueDetails from "./IssueDetails";
+import { useSearchContext } from "../context/SearchContext";
+import { useFilterContext } from "../context/FilterContext";
 
 function IssueList({ filter }: IssueListProps) {
   const [issues, setIssues] = useState<Issue[]>([]);
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
+  const [selectedIssueNumber, setSelectedIssueNumber] = useState<number | null>(
+    null
+  ); // State to save the selected issue's issue_number
+  const { searchQuery } = useSearchContext();
+  const { filter: appliedFilter } = useFilterContext();
 
   useEffect(() => {
-    fetchGitHubIssues()
-      .then((data: Issue[]) => {
+    // Fetch issues based on the applied filter
+    const fetchIssues = async () => {
+      let apiUrl = "https://api.github.com/repos/mumo-esther/Js-best-practices/issues"; // Modify this URL
+      if (appliedFilter === "open") {
+        apiUrl += "?state=open";
+      } else if (appliedFilter === "closed") {
+        apiUrl += "?state=closed";
+      }
+
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data: Issue[] = await response.json();
         setIssues(data);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching GitHub issues:", error);
-      });
-  }, []);
+      }
+    };
+
+    fetchIssues();
+  }, [appliedFilter]);
 
   const paddingBottom = issues.length > 0 ? `pb-${issues.length * 8}` : "";
 
   const handleIssueClick = (issue: Issue) => {
     setSelectedIssue(issue);
+    setSelectedIssueNumber(issue.number); // Save the selected issue's issue_number
   };
 
   const handleCloseIssueDetails = () => {
     setSelectedIssue(null);
+    setSelectedIssueNumber(null); // Clear the selected issue's issue_number
   };
 
-  // Filter issues based on the selected filter
   const filteredIssues = issues.filter((issue) => {
-    if (filter === "open") {
-      return issue.state === "open";
-    } else if (filter === "closed") {
-      return issue.state === "closed";
+    const isOpen = issue.state === "open";
+    const isClosed = issue.state === "closed";
+
+    if (filter === "open" && !isOpen) {
+      return false;
     }
-    // Default: show all issues
+    if (filter === "closed" && !isClosed) {
+      return false;
+    }
+
+    if (searchQuery) {
+      const searchKeywords = searchQuery.toLowerCase().split(" ");
+      const title = issue.title.toLowerCase();
+      const body = issue.body ? issue.body.toLowerCase() : "";
+
+      if (
+        !searchKeywords.every(
+          (keyword) => title.includes(keyword) || body.includes(keyword)
+        )
+      ) {
+        return false;
+      }
+    }
+
     return true;
   });
 
@@ -77,6 +118,7 @@ function IssueList({ filter }: IssueListProps) {
             <IssueDetails
               issue={selectedIssue}
               onClose={handleCloseIssueDetails}
+              issueNumber={selectedIssueNumber} // Pass the issue_number as a prop
             />
           )}
         </div>
