@@ -17,6 +17,7 @@ export interface Issue {
  export interface IssueDetailsProps {
     issue: Issue;
     onClose: () => void;
+    issueNumber: number | null;
   }
 
   export interface IssueListProps {
@@ -34,4 +35,8 @@ export interface Issue {
   export interface NavbarProps {
     onFilterChange: (filter: string) => void;
     onSearch: (query: string) => void;
+  }
+
+  export interface Comment {
+    commentId : number
   }
