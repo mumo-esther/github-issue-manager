@@ -1,4 +1,22 @@
+import { useEffect, useState } from "react";
+import { fetchAssignees } from "../api/githubAPI";
+interface Assignee {
+  id: number;
+  login: string;
+}
+
 function IssueHeader() {
+  const [Assignees, setAssignees] = useState<Assignee[]>([]);
+  useEffect(() => {
+    fetchAssignees()
+      .then((AssigneesData: Assignee[]) => {
+        setAssignees(AssigneesData);
+      })
+      .catch((error) => {
+        console.error("Error fetching Assignees:", error);
+      });
+  }, []);
+  
   return (
     <div className="flex flex-col lg:flex-row justify-between items-center p-4 bg-gray-200">
       <div className="flex flex-wrap items-center space-y-2 lg:space-y-0 lg:space-x-4 mb-2 lg:mb-0">
@@ -24,24 +42,22 @@ function IssueHeader() {
           {/* Add author options */}
         </select>
         {/* Label select */}
-        <select className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="">Label</option>
-          {/* Add label options */}
-        </select>
+        
         {/* Projects select */}
         <select className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">Projects</option>
           {/* Add project options */}
         </select>
-        {/* Milestones select */}
-        <select className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="">Milestones</option>
-          {/* Add milestone options */}
-        </select>
+        {/* Assignees select */}
+        
         {/* Assignee select */}
         <select className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">Assignee</option>
-          {/* Add assignee options */}
+            {Assignees.map((Assignee) => (
+              <option key={Assignee.id} value={Assignee.id}>
+                {Assignee.login}
+              </option>
+              ))}
         </select>
         {/* Sort select */}
         <select className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
