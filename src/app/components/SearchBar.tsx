@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import NewIssueButton from "./NewIssueButton";
-import { SearchBarProps } from "../interfaces/issueTypes";
+import { useSearchContext } from "../context/SearchContext";
 
-function SearchBar({ onSearch }: SearchBarProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+function SearchBar() {
+  const { searchQuery, setSearchQuery } = useSearchContext();
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-    onSearch(query);
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
   };
 
   return (
@@ -18,8 +16,8 @@ function SearchBar({ onSearch }: SearchBarProps) {
           type="text"
           placeholder="Search issues..."
           className="bg-gray-200 text-black rounded-md py-2 px-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={searchQuery}
-          onChange={handleSearchChange}
+          value={searchQuery} 
+          onChange={handleInputChange}
         />
         <button className="absolute inset-y-0 right-0 px-3 text-gray-400 hover:text-blue-700">
           <svg
