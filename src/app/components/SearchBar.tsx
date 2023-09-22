@@ -1,7 +1,14 @@
 import React from "react";
-import NewIssue from "./NewIssue";
+import NewIssueButton from "./NewIssueButton";
+import { useSearchContext } from "../context/SearchContext";
 
 function SearchBar() {
+  const { searchQuery, setSearchQuery } = useSearchContext();
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
   return (
     <div className="flex items-center">
       <div className="relative">
@@ -9,6 +16,8 @@ function SearchBar() {
           type="text"
           placeholder="Search issues..."
           className="bg-gray-200 text-black rounded-md py-2 px-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={searchQuery} 
+          onChange={handleInputChange}
         />
         <button className="absolute inset-y-0 right-0 px-3 text-gray-400 hover:text-blue-700">
           <svg
@@ -27,7 +36,7 @@ function SearchBar() {
           </svg>
         </button>
       </div>
-      <NewIssue />
+      <NewIssueButton />
     </div>
   );
 }

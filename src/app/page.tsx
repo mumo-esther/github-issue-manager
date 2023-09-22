@@ -1,15 +1,29 @@
-import Header from "@/components/Header";
-import IssueList from "@/components/IssueList";
-import Navbar from "@/components/Navbar";
+"use client";
+import Header from "@/app/components/Header";
+import Navbar from "@/app/components/Navbar";
+import IssueList from "./components/IssueList";
+import { SearchProvider } from "./context/SearchContext";
+import { FilterProvider } from "./context/FilterContext";
 
 export default function Home() {
+  const handleFilterChange = (filter: any) => {
+    console.log("Filter changed:", filter);
+  };
+
+  const handleSearch = (query: any) => {
+    console.log("Search query:", query);
+  };
   return (
+    <FilterProvider>
+    <SearchProvider >
     <div>
       <Header />
       <main className="container mx-auto p-4">
-        < Navbar />
-        <IssueList />
+      <Navbar onFilterChange={handleFilterChange} onSearch={handleSearch} />
+        <IssueList filter={""} />
       </main>
     </div>
+    </SearchProvider>
+    </FilterProvider>
   )
 }
