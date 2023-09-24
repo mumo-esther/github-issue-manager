@@ -1,17 +1,27 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-
-interface FilterContextType {
-  filter: string;
-  setFilter: React.Dispatch<React.SetStateAction<string>>;
-}
+import { FilterContextType } from "../interfaces/issueTypes";
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
 
 export function FilterProvider({ children }: { children: ReactNode }) {
   const [filter, setFilter] = useState<string>("");
+  const [selectedMilestone, setSelectedMilestone] = useState<string>("");
+  const [selectedLabel, setSelectedLabel] = useState<string>("");
+  const [selectedAssignee, setSelectedAssignee] = useState<string>("");
 
   return (
-    <FilterContext.Provider value={{ filter, setFilter }}>
+    <FilterContext.Provider
+      value={{
+        filter,
+        setFilter,
+        selectedMilestone,
+        setSelectedMilestone,
+        selectedLabel,
+        setSelectedLabel,
+        selectedAssignee,
+        setSelectedAssignee,
+      }}
+    >
       {children}
     </FilterContext.Provider>
   );
