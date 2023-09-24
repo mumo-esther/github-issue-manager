@@ -14,7 +14,7 @@ function SearchBar() {
       <div className="relative">
         <input
           type="text"
-          placeholder="Search issues..."
+          placeholder="Search here..."
           className="bg-gray-200 text-black rounded-md py-2 px-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={searchQuery} 
           onChange={handleInputChange}
