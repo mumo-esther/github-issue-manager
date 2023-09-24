@@ -1,163 +1,77 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const GITHUB_TOKEN = "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";
 const OWNER = "mumo-esther";
-const REPO = "Js-best-practices"
-const GITHUB_API_BASE_URL = "https://api.github.com/repos/${OWNER}/${REPO}";
+const REPO = "Js-best-practices";
+const GITHUB_API_BASE_URL = "https://api.github.com";
 
-export async function fetchGitHubIssues() {
+async function makeGitHubRequest(
+  endpoint: string,
+  method: AxiosRequestConfig["method"],
+  data?: any
+) {
+  const url = `${GITHUB_API_BASE_URL}/repos/${OWNER}/${REPO}${endpoint}`;
+  const headers = {
+    Authorization: `Bearer ${GITHUB_TOKEN}`,
+    "Content-Type": "application/json",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
 
   try {
-    const response = await axios.get(
-      `${GITHUB_API_BASE_URL}/issues`,
-      {
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          "Content-Type": "application/json",
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      }
-    );
+    const response = await axios({
+      method,
+      url,
+      data,
+      headers,
+    });
 
     if (response.status !== 200) {
-      throw new Error("Network response was not ok");
+      throw new Error(`Network response was not ok: ${response.status}`);
     }
-
 
     return response.data;
   } catch (error: any) {
-    console.error("Error fetching GitHub issues:", error);
+    console.error(`Error fetching GitHub data for ${endpoint}:`, error);
     throw error;
   }
+}
+
+export async function fetchGitHubIssues() {
+  return makeGitHubRequest("/issues", "GET");
 }
 
 export async function postNewIssue(issueData: any) {
-
-  try {
-    const response = await axios.post(
-      `${GITHUB_API_BASE_URL}/issues`,
-      {
-        title: issueData.title,
-        body: issueData.body,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          Accept: "application/vnd.github.v3+json",
-        },
-      }
-    );
-
-    if (response.status !== 201) {
-      throw new Error(`Failed to create new issue: ${response.statusText}`);
-    }
-
-    return response.data;
-  } catch (error: any) {
-    throw new Error(`Error creating new issue: ${error.message}`);
-  }
+  return makeGitHubRequest("/issues", "POST", issueData);
 }
 
 export async function fetchIssueComments(commentId: any) {
-
-  try {
-    const response = await axios.get(
-      `${GITHUB_API_BASE_URL}/repos/${OWNER}/${REPO}/issuescomments/${commentId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          "Content-Type": "application/json",
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      }
-    );
-
-    if (response.status !== 200) {
-      throw new Error("Network response was not ok");
-    }
-
-
-    return response.data;
-  } catch (error: any) {
-    console.error("Error fetching GitHub issues:", error);
-    throw error;
-  }
+  return makeGitHubRequest(`/issues/comments/${commentId}`, "GET");
 }
 
 export async function fetchLabels() {
-
-  try {
-    const response = await axios.get(
-      `https://api.github.com/repos/mumo-esther/Js-best-practices/labels`,
-      {
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          "Content-Type": "application/json",
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      }
-    );
-
-    if (response.status !== 200) {
-      throw new Error("Network response was not ok");
-    }
-
-
-    return response.data;
-  } catch (error: any) {
-    console.error("Error fetching labels:", error);
-    throw error;
-  }
+  return makeGitHubRequest("/labels", "GET");
 }
 
 export async function fetchMilestones() {
-
-  try {
-    const response = await axios.get(
-      `https://api.github.com/repos/mumo-esther/Js-best-practices/milestones`,
-      {
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          "Content-Type": "application/json",
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      }
-    );
-
-    if (response.status !== 200) {
-      throw new Error("Network response was not ok");
-    }
-
-
-    return response.data;
-  } catch (error: any) {
-    console.error("Error fetching milestones:", error);
-    throw error;
-  }
+  return makeGitHubRequest("/milestones", "GET");
 }
 
 export async function fetchAssignees() {
+  return makeGitHubRequest("/assignees", "GET");
+}
 
-  try {
-    const response = await axios.get(
-      `https://api.github.com/repos/mumo-esther/Js-best-practices/assignees`,
-      {
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          "Content-Type": "application/json",
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      }
-    );
+export async function fetchOpenIssues() {
+  return makeGitHubRequest("/issues?state=open", "GET");
+}
 
-    if (response.status !== 200) {
-      throw new Error("Network response was not ok");
-    }
+export async function fetchClosedIssues() {
+  return makeGitHubRequest("/issues?state=closed", "GET");
+}
 
+export async function postNewMilestone(milestoneData: any) {
+  return makeGitHubRequest("/milestones", "POST", milestoneData);
+}
 
-    return response.data;
-  } catch (error: any) {
-    console.error("Error fetching Asignees:", error);
-    throw error;
-  }
+export async function postNewLabel(LabelData: any) {
+  return makeGitHubRequest("/labels", "POST", LabelData);
 }
