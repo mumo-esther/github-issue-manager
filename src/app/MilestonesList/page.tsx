@@ -127,7 +127,7 @@ function MilestonesList() {
         </div>
       ) : (
         <div className="border border-gray-300 rounded-md p-5 text-center">
-          <p className="text-gray-500">There aren't any open milestones.</p>
+          <p className="text-gray-500">There aren&apos;t any open milestones.</p>
         </div>
       )}
     </div>
