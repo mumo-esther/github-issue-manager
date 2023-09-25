@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import IssueHeader from "./IssueHeader";
-import { fetchGitHubIssues } from "../api/githubAPI";
 import { Issue, IssueListProps } from "../interfaces/issueTypes";
 import IssueDetails from "./IssueDetails";
 import { useSearchContext } from "../context/SearchContext";
@@ -13,16 +12,38 @@ function IssueList({ filter }: IssueListProps) {
     null
   ); // State to save the selected issue's issue_number
   const { searchQuery } = useSearchContext();
-  const { filter: appliedFilter } = useFilterContext();
+  const { filter: appliedFilter,
+    selectedMilestone,
+    selectedLabel,
+    selectedAssignee,
+   } = useFilterContext();
 
   useEffect(() => {
-    // Fetch issues based on the applied filter
     const fetchIssues = async () => {
-      let apiUrl = "https://api.github.com/repos/mumo-esther/Js-best-practices/issues"; // Modify this URL
+      let apiUrl = "https://api.github.com/repos/mumo-esther/Js-best-practices/issues";
+
+      const queryParams = [];
+
       if (appliedFilter === "open") {
         apiUrl += "?state=open";
       } else if (appliedFilter === "closed") {
         apiUrl += "?state=closed";
+      }
+
+      if (selectedMilestone) {
+        queryParams.push(`milestone=${selectedMilestone}`);
+      }
+
+      if (selectedLabel) {
+        queryParams.push(`labels=${selectedLabel}`);
+      }
+
+      if (selectedAssignee) {
+        queryParams.push(`assignee=${selectedAssignee}`);
+      }
+
+      if (queryParams.length > 0) {
+        apiUrl += "?" + queryParams.join("&");
       }
 
       try {
@@ -38,7 +59,7 @@ function IssueList({ filter }: IssueListProps) {
     };
 
     fetchIssues();
-  }, [appliedFilter]);
+  }, [appliedFilter, selectedMilestone, selectedLabel, selectedAssignee]);
 
   const paddingBottom = issues.length > 0 ? `pb-${issues.length * 8}` : "";
 

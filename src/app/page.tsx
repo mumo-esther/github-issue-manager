@@ -20,7 +20,7 @@ export default function Home() {
       <Header />
       <main className="container mx-auto p-4">
       <Navbar onFilterChange={handleFilterChange} onSearch={handleSearch} />
-        <IssueList filter={""} />
+        <IssueList filter={""} issues={[]} />
       </main>
     </div>
     </SearchProvider>

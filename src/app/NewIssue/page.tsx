@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import {postNewIssue} from "../api/githubAPI";
 import { useRouter } from "next/navigation";
+import Selects from "../components/Selects";
+import Link from "next/link";
 
 function NewIssue() {
   const [activeButton, setActiveButton] = useState("write");
@@ -41,6 +43,9 @@ function NewIssue() {
   return (
     <div className="border rounded-md m-10">
       <form onSubmit={handleSubmit}>
+        <div>
+          <Selects />
+        </div>
         <input
           name="title"
           className="w-full h-10 p-2 bg-gray-100 border rounded-md mb-2 text-black"
@@ -78,6 +83,13 @@ function NewIssue() {
           onChange={handleInputChange}
         ></textarea>
         <div className="flex justify-end">
+        <Link href = '/' >
+        <button
+            className="bg-blue-400 hover:bg-blue-700 text-black px-4 py-2 border rounded-md"
+          >
+            Cancel
+          </button>
+          </Link>
           <button
             type="submit"
             className="bg-gray-200 hover:bg-blue-600 text-black px-4 py-2 rounded-md ml-10"
