@@ -9,7 +9,7 @@ export interface Issue {
     body: string;
   }
   
-  interface User {
+  export interface User {
     login: string;
     avatar_url: string;
   }
@@ -88,3 +88,11 @@ export interface Issue {
     description: string;
     default: boolean;
   }
+
+ export  interface IssueComment {
+    id: number;
+    user: User,
+    created_at: string; 
+    body: string;
+  }
+  
