@@ -33,9 +33,6 @@ function LabelsList() {
       .then((data: Label[]) => {
         setLabels(data);
       })
-      .catch((error) => {
-        console.error("Error fetching GitHub labels:", error);
-      });
   }, []);
 
   const handleLabelClick = (label: Label) => {

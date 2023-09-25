@@ -15,20 +15,16 @@ function MilestonesList() {
       .then((data: Milestone[]) => {
         setMilestones(data);
       })
-      .catch((error) => {
-        console.error("Error fetching GitHub milestones:", error);
-      });
 
     fetchOpenIssues()
       .then((response) => {
-        console.log(response); // Log the response object
+        console.log(response);
         if (!response.ok) {
           throw new Error(`Open issues request failed with status: ${response.status}`);
         }
         return response.json();
       })
       .then((data) => {
-        console.log(data); // Log the parsed data
         setOpenIssuesCount(data.length);
       })
       .catch((error) => {
