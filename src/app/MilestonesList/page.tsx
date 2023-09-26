@@ -8,6 +8,7 @@ import {
 import Link from "next/link";
 import Modal from "react-modal";
 import { Milestone } from "../interfaces/issueTypes";
+import { Save, Delete, Edit3 } from "react-feather";
 
 const modalStyles = {
   content: {
@@ -149,18 +150,20 @@ function MilestonesList() {
                 #{milestone.number} opened on {new Date(milestone.updated_at).toLocaleDateString()}
               </span>
               <div className="flex items-center space-x-2">
-                <button
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md mr-2"
-                  onClick={() => handleDeleteMilestone(milestone)}
-                >
-                  Delete
-                </button>
-                <button
+
+              <button
                   className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md"
                   onClick={() => handleMilestoneClick(milestone)}
                 >
-                  Edit
+                 < Edit3 />
                 </button>
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md ml-2"
+                  onClick={() => handleDeleteMilestone(milestone)}
+                >
+                 < Delete size={20}/>
+                </button>
+
               </div>
             </div>
           ))}
@@ -192,7 +195,7 @@ function MilestonesList() {
                 onChange={(e) => setEditedMilestoneTitle(e.target.value)}
               />
             </div>
-            <div className="mt-4">
+            <div className="mt-4 flex items-center">
               <button
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md mr-2"
                 onClick={handleCloseMilestoneDetails}
@@ -203,7 +206,7 @@ function MilestonesList() {
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
                 onClick={() => handleEditMilestone(selectedMilestone)}
               >
-                Save
+               < Save />
               </button>
             </div>
           </>

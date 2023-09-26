@@ -44,7 +44,9 @@ function NewIssue() {
     <div className="border rounded-md m-10">
       <form onSubmit={handleSubmit}>
         <div>
-          <Selects />
+          <Selects onFilterChange={function (label: string | null, assignee: string | null, milestone: string | null): void {
+            throw new Error("Function not implemented.");
+          } } />
         </div>
         <input
           name="title"

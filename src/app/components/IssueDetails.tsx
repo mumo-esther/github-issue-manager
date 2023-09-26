@@ -11,6 +11,7 @@ import {
   DeleteComment,
 } from "../api/githubAPI";
 import DetailsSelect from "./DetailsSelect";
+import { Lock, Unlock, Edit3, Save, Delete, Home } from "react-feather";
 
 function IssueDetails({
   issue,
@@ -175,8 +176,8 @@ function IssueDetails({
             {issue.title} (#{issue.number})
           </h1>
           <DetailsSelect issueNumber={issueNumber} />
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            Close
+          <button onClick={onClose} className="text-blue-500 hover:text-gray-700">
+            <Home size={30} />
           </button>
         </div>
         <div className="p-4">
@@ -194,7 +195,7 @@ function IssueDetails({
                     onClick={() => handleButtonClick("edit")}
                     className="bg-white hover:bg-blue-600 text-black px-4 py-2 rounded-md ml-10"
                   >
-                    Edit
+                    <Edit3 />
                   </button>
                 ) : (
                   <>
@@ -202,7 +203,7 @@ function IssueDetails({
                       onClick={handleEditSave}
                       className="bg-blue-600 text-white px-4 py-2 rounded-md ml-10"
                     >
-                      Save
+                      <Save size={16} />
                     </button>
                     <button
                       onClick={() => {
@@ -221,14 +222,14 @@ function IssueDetails({
                     onClick={handleUnlockIssue}
                     className="bg-green-500 text-white px-4 py-2 rounded-md ml-2"
                   >
-                    Unlock Issue
+                  <Unlock size={16}/>
                   </button>
                 ) : (
                   <button
                     onClick={handleLockIssue}
                     className="bg-red-500 text-white px-4 py-2 rounded-md ml-2"
                   >
-                    Lock Issue
+                    <Lock size={16} />
                   </button>
                 )}
               </div>
@@ -255,14 +256,14 @@ function IssueDetails({
           </div>
           {comments.map((comment) => (
             <div key={comment.id} className="border-t p-4">
-              <div className="flex items-start mb-4">
-                <img
-                  src={comment.user.avatar_url}
-                  alt={comment.user.login}
-                  className="w-8 h-8 rounded-full mr-2"
-                />
+              <div className="w-full mb-4">
                 <div>
                   <div className="flex items-center">
+                    <img
+                      src={comment.user.avatar_url}
+                      alt={comment.user.login}
+                      className="w-8 h-8 rounded-full mr-2"
+                    />
                     <span className="text-gray-700 font-semibold">
                       {comment.user.login}
                     </span>
@@ -275,15 +276,15 @@ function IssueDetails({
                       <textarea
                         value={editableCommentContent}
                         onChange={(e) => setEditableCommentContent(e.target.value)}
-                        className="w-full p-2 border rounded-md mt-2"
+                        className="h-40 w-full p-2 border rounded-md mt-2"
                         placeholder="Edit comment..."
                       ></textarea>
-                      <div className="mt-2">
+                      <div className="mt-2 flex items-center">
                         <button
                           onClick={() => handleSaveEditedComment(comment.id)}
                           className="bg-blue-600 text-white px-2 py-1 rounded-md mr-2"
                         >
-                          Save
+                         < Save size={26}/>
                         </button>
                         <button
                           onClick={() => handleEditComment(comment.id)}
@@ -295,24 +296,24 @@ function IssueDetails({
                     </>
                   ) : (
                     <>
-                      <div className="ml-4 p-2 border rounded-md text-gray-900 bg-gray-100 w-full">
-                        {comment.body}
-                      </div>
-
-                      <div className="mt-2">
+                    <div className="flex justify-end">
                         <button
                           onClick={() => handleEditComment(comment.id)}
                           className="text-blue-600 hover:underline mr-2"
                         >
-                          Edit
+                           <Edit3 />
                         </button>
                         <button
                           onClick={() => handleDeleteComment(comment.id)}
                           className="text-red-600 hover:underline"
                         >
-                          Delete
+                          <Delete size={25}/>
                         </button>
                       </div>
+                      <div className="w-full ml-2 p-2 border rounded-md text-gray-900 bg-gray-100 text-left whitespace-pre-wrap">
+                        {comment.body}
+                      </div>
+                      
                     </>
                   )}
                 </div>

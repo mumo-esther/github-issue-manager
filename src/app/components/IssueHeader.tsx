@@ -10,7 +10,10 @@ interface Issue {
 function IssueHeader() {
   const [openIssuesCount, setOpenIssuesCount] = useState<number>(0);
   const [closedIssuesCount, setClosedIssuesCount] = useState<number>(0);
-  const { filter, setFilter } = useFilterContext();
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
+  const [selectedMilestone, setSelectedMilestone] = useState<string | null>(null);
+  const [selectedAssignee, setSelectedAssignee] = useState<string | null>(null);
+
 
   useEffect(() => {
     // Fetch open issues
@@ -34,6 +37,12 @@ function IssueHeader() {
       });
   }, []);
 
+  const handleFilterChange = (label: string | null, assignee: string | null, milestone: string | null) => {
+    setSelectedLabel(label);
+    setSelectedAssignee(assignee);
+    setSelectedMilestone(milestone);
+  };
+
   return (
     <div className="flex flex-col lg:flex-row justify-between items-center p-4 bg-gray-200">
       <div className="flex flex-wrap items-center space-y-2 lg:space-y-0 lg:space-x-4 mb-2 lg:mb-0">
@@ -49,7 +58,7 @@ function IssueHeader() {
         <span className="text-gray-700">Closed: {closedIssuesCount}</span>
       </div>
       <div className="flex flex-wrap items-center space-y-2 lg:space-y-0 lg:space-x-4">
-        <Selects />
+      <Selects onFilterChange={handleFilterChange} />
       </div>
     </div>
   );

@@ -12,38 +12,17 @@ function IssueList({ filter }: IssueListProps) {
     null
   ); // State to save the selected issue's issue_number
   const { searchQuery } = useSearchContext();
-  const { filter: appliedFilter,
-    selectedMilestone,
-    selectedLabel,
-    selectedAssignee,
-   } = useFilterContext();
+  const { filter: appliedFilter, } = useFilterContext();
 
   useEffect(() => {
     const fetchIssues = async () => {
       let apiUrl = "https://api.github.com/repos/mumo-esther/Js-best-practices/issues";
 
-      const queryParams = [];
 
       if (appliedFilter === "open") {
         apiUrl += "?state=open";
       } else if (appliedFilter === "closed") {
         apiUrl += "?state=closed";
-      }
-
-      if (selectedMilestone) {
-        queryParams.push(`milestone=${selectedMilestone}`);
-      }
-
-      if (selectedLabel) {
-        queryParams.push(`labels=${selectedLabel}`);
-      }
-
-      if (selectedAssignee) {
-        queryParams.push(`assignee=${selectedAssignee}`);
-      }
-
-      if (queryParams.length > 0) {
-        apiUrl += "?" + queryParams.join("&");
       }
 
       try {
@@ -59,7 +38,7 @@ function IssueList({ filter }: IssueListProps) {
     };
 
     fetchIssues();
-  }, [appliedFilter, selectedMilestone, selectedLabel, selectedAssignee]);
+  }, [appliedFilter]);
 
   const paddingBottom = issues.length > 0 ? `pb-${issues.length * 8}` : "";
 
@@ -139,7 +118,7 @@ function IssueList({ filter }: IssueListProps) {
             <IssueDetails
               issue={selectedIssue}
               onClose={handleCloseIssueDetails}
-              issueNumber={selectedIssueNumber} // Pass the issue_number as a prop
+              issueNumber={selectedIssueNumber} 
             />
           )}
         </div>

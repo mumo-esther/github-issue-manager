@@ -8,6 +8,7 @@ import {
 import Link from "next/link";
 import Modal from "react-modal";
 import { Label } from "../interfaces/issueTypes";
+import { Edit3, Delete, Save, Move } from "react-feather";
 
 const modalStyles = {
   content: {
@@ -121,17 +122,19 @@ function LabelsList() {
                 {label.name}
               </p>
               <div className="mt-2 flex justify-end items-right">
-                <button
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md mr-2"
-                  onClick={() => handleDeleteLabel(label)}
-                >
-                  Delete
-                </button>
+                
                 <button
                   className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md"
                   onClick={() => handleEditLabel(label)}
                 >
-                  Edit
+                 < Edit3 />
+                </button>
+
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md ml-2"
+                  onClick={() => handleDeleteLabel(label)}
+                >
+                 < Delete size={20} />
                 </button>
               </div>
             </div>
@@ -166,7 +169,7 @@ function LabelsList() {
             </div>
             <div className="w-3 h-3 rounded-full mb-2" style={{ backgroundColor: `#${selectedLabel.color}` }}></div>
             <p>{selectedLabel.description}</p>
-            <div className="mt-4">
+            <div className="mt-4 flex items-center">
               <button
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md mr-2"
                 onClick={handleCloseLabelDetails}
@@ -177,7 +180,7 @@ function LabelsList() {
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
                 onClick={() => handleEditLabel(selectedLabel)}
               >
-                Save
+                <Save />
               </button>
             </div>
           </>
