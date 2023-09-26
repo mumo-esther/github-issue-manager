@@ -2,39 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { Label, Assignee } from '../interfaces/issueTypes';
 import { fetchAssignees, fetchLabels, addAssignee, addLabel, removeAssignee, removeLabel } from '../api/githubAPI';
 import Swal from 'sweetalert2';
+import { Plus, Minus } from 'react-feather';
 
 interface DetailsSelectProps {
-    issueNumber: number | null; 
-  }
+  issueNumber: number | null;
+}
 
 function DetailsSelect({ issueNumber }: DetailsSelectProps) {
   const [labels, setLabels] = useState<Label[]>([]);
-  const [Assignees, setAssignees] = useState<Assignee[]>([]);
+  const [assignees, setAssignees] = useState<Assignee[]>([]);
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
   const [selectedAssignee, setSelectedAssignee] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchLabels()
-      .then((labelsData: Label[]) => {
-        setLabels(labelsData);
-      });
+    fetchLabels().then((labelsData: Label[]) => {
+      setLabels(labelsData);
+    });
 
-    fetchAssignees()
-      .then((AssigneesData: Assignee[]) => {
-        setAssignees(AssigneesData);
-      });
+    fetchAssignees().then((assigneesData: Assignee[]) => {
+      setAssignees(assigneesData);
+    });
   }, []);
 
-  const handleLabelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLabel(event.target.value);
-  };
-
-  const handleAssigneeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedAssignee(event.target.value);
-  };
-
   const handleAddLabel = async () => {
-    if (selectedLabel) {
+    if (selectedLabel && issueNumber) {
       try {
         await addLabel(issueNumber);
         Swal.fire('Label Added', '', 'success');
@@ -47,7 +38,7 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
   };
 
   const handleRemoveLabel = async () => {
-    if (selectedLabel) {
+    if (selectedLabel && issueNumber) {
       try {
         await removeLabel(issueNumber);
         Swal.fire('Label Removed', '', 'success');
@@ -60,7 +51,7 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
   };
 
   const handleAddAssignee = async () => {
-    if (selectedAssignee) {
+    if (selectedAssignee && issueNumber) {
       try {
         await addAssignee(issueNumber);
         Swal.fire('Assignee Added', '', 'success');
@@ -73,7 +64,7 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
   };
 
   const handleRemoveAssignee = async () => {
-    if (selectedAssignee) {
+    if (selectedAssignee && issueNumber) {
       try {
         await removeAssignee(issueNumber);
         Swal.fire('Assignee Removed', '', 'success');
@@ -87,56 +78,59 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
 
   return (
     <div className="flex items-center space-x-4">
-      <select
-        className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        value={selectedLabel || ''}
-        onChange={handleLabelChange}
-      >
-        <option value="">Label</option>
-        {labels.map((label) => (
-          <option key={label.id} value={label.name}>
-            {label.name}
-          </option>
-        ))}
-      </select>
-
+      <div>
+        <select
+          className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={selectedLabel || ''}
+          onChange={(e) => setSelectedLabel(e.target.value)}
+        >
+          <option value="">Select Label</option>
+          {labels.map((label) => (
+            <option key={label.id} value={label.name}>
+              {label.name}
+            </option>
+          ))}
+        </select>
+      </div>
       <button
         className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
         onClick={handleAddLabel}
       >
-        Add Label
+        <Plus size={16} /> 
       </button>
       <button
         className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
         onClick={handleRemoveLabel}
       >
-        Remove Label
+        <Minus size={16} /> 
       </button>
 
-      <select
-        className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        value={selectedAssignee || ''}
-        onChange={handleAssigneeChange}
-      >
-        <option value="">Assignee</option>
-        {Assignees.map((assignee) => (
-          <option key={assignee.id} value={assignee.login}>
-            {assignee.login}
-          </option>
-        ))}
-      </select>
+      <div>
+        <select
+          className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={selectedAssignee || ''}
+          onChange={(e) => setSelectedAssignee(e.target.value)}
+        >
+          <option value="">Select Assignee</option>
+          {assignees.map((assignee) => (
+            <option key={assignee.id} value={assignee.login}>
+              {assignee.login}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <button
         className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
         onClick={handleAddAssignee}
       >
-        Add Assignee
+        <Plus size={16} /> 
       </button>
       <button
         className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
         onClick={handleRemoveAssignee}
       >
-        Remove Assignee
+        <Minus size={16} /> {/* Minus icon */}
       </button>
     </div>
   );
