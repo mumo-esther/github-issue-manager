@@ -141,7 +141,7 @@ function LabelsList() {
           ))
         ) : (
           <div className="border border-gray-500 rounded-md text-center mt-4 p-4">
-            <p className="font-bold">There aren't any labels yet.</p>
+            <p className="font-bold">There aren&apos;t any labels yet.</p>
           </div>
         )}
       </div>
