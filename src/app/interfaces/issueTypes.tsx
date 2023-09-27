@@ -1,4 +1,6 @@
 export interface Issue {
+    assignees: any;
+    labels: any;
     id: number;
     title: string;
     created_at: Date;
@@ -12,6 +14,7 @@ export interface Issue {
   export interface User {
     login: string;
     avatar_url: string;
+    id:number
   }
   
  export interface IssueDetailsProps {
