@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Label, Assignee } from '../interfaces/issueTypes';
-import { fetchAssignees, fetchLabels, addAssignee, addLabel, removeAssignee, removeLabel } from '../api/githubAPI';
+import { fetchAssignees, fetchLabels, addAssignees, addLabel, removeAssignee, removeLabel } from '../api/githubAPI';
 import Swal from 'sweetalert2';
 import { Plus, Minus } from 'react-feather';
 
@@ -27,7 +27,8 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
   const handleAddLabel = async () => {
     if (selectedLabel && issueNumber) {
       try {
-        await addLabel(issueNumber);
+        const labelsToAdd = [selectedLabel];
+        await addLabel(issueNumber, labelsToAdd);
         Swal.fire('Label Added', '', 'success');
         setSelectedLabel(null);
       } catch (error) {
@@ -36,11 +37,11 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
       }
     }
   };
-
+  
   const handleRemoveLabel = async () => {
     if (selectedLabel && issueNumber) {
       try {
-        await removeLabel(issueNumber);
+        await removeLabel(issueNumber, selectedLabel); 
         Swal.fire('Label Removed', '', 'success');
         setSelectedLabel(null);
       } catch (error) {
@@ -49,11 +50,12 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
       }
     }
   };
+  
 
   const handleAddAssignee = async () => {
     if (selectedAssignee && issueNumber) {
       try {
-        await addAssignee(issueNumber);
+        await addAssignees(issueNumber, [selectedAssignee]); 
         Swal.fire('Assignee Added', '', 'success');
         setSelectedAssignee(null);
       } catch (error) {
@@ -62,11 +64,12 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
       }
     }
   };
+  
 
   const handleRemoveAssignee = async () => {
     if (selectedAssignee && issueNumber) {
       try {
-        await removeAssignee(issueNumber);
+        await removeAssignee(issueNumber, [selectedAssignee]);
         Swal.fire('Assignee Removed', '', 'success');
         setSelectedAssignee(null);
       } catch (error) {
@@ -75,6 +78,7 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
       }
     }
   };
+  
 
   return (
     <div className="flex items-center space-x-4">
@@ -130,7 +134,7 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
         className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
         onClick={handleRemoveAssignee}
       >
-        <Minus size={16} /> {/* Minus icon */}
+        <Minus size={16} /> 
       </button>
     </div>
   );
