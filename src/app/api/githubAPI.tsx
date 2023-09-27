@@ -49,12 +49,24 @@ export async function postNewIssue(issueData: any) {
   return makeGitHubRequest("/issues", "POST", issueData);
 }
 
-export async function fetchOpenIssues() {
-  return makeGitHubRequest("/issues?state=open", "GET");
+export async function fetchOpenIssues(label: string | null, assignee: string | null, milestone: string | null) {
+  let filterParams = '';
+
+  if(label) filterParams += `&labels=${label}`;
+  if(assignee) filterParams += `&assignee=${assignee}`;
+  if(milestone) filterParams += `&milestone=${milestone}`;
+
+  return makeGitHubRequest(`/issues?state=open${filterParams}`, "GET");
 }
 
-export async function fetchClosedIssues() {
-  return makeGitHubRequest("/issues?state=closed", "GET");
+export async function fetchClosedIssues(label: string | null, assignee: string | null, milestone: string | null) {
+  let filterParams = '';
+
+  if(label) filterParams += `&labels=${label}`;
+  if(assignee) filterParams += `&assignee=${assignee}`;
+  if(milestone) filterParams += `&milestone=${milestone}`;
+
+  return makeGitHubRequest(`/issues?state=closed${filterParams}`, "GET");
 }
 
 export async function UpdateIssue(issueNumber: number, updatedData: any) {
@@ -105,14 +117,30 @@ export async function deleteLabel(name:string) {
   return makeGitHubRequest(`/labels/${name}`, "DELETE")
 }
 
-export async function addLabel(issue_number:any) {
-  return makeGitHubRequest(`/issues/${issue_number}/labels`, "POST");
+export async function addLabel(issue_number: number, labelNames: string[]) {
+  const endpoint = `/issues/${issue_number}/labels`;
+  const method = "POST";
+  const data = labelNames;
+
+  try {
+    const result = await makeGitHubRequest(endpoint, method, data);
+    return result;
+  } catch (error) {
+    throw error;
+  }
 }
 
-export async function removeLabel(issue_number:any) {
-  return makeGitHubRequest(`/issues/${issue_number}/labels`, "DELETE");
+export async function removeLabel(issue_number: number, labelName: string) {
+  const endpoint = `/issues/${issue_number}/labels/${encodeURIComponent(labelName)}`;
+  const method = "DELETE";
+  try {
+    await makeGitHubRequest(endpoint, method);
+    console.log(`Label "${labelName}" removed from the issue.`);
+  } catch (error) {
+    console.error(`Error removing label "${labelName}" from the issue:`, error);
+    throw error;
+  }
 }
-
 
 {/**Milestones */ }
 
@@ -138,11 +166,36 @@ export async function fetchAssignees() {
   return makeGitHubRequest("/assignees", "GET");
 }
 
-export async function addAssignee(issue_number:any) {
-  return makeGitHubRequest(`/issues/${issue_number}/assignees`, "POST");
+export async function addAssignees(issue_number: number, assigneeUsernames: string[]) {
+  const endpoint = `/issues/${issue_number}/assignees`;
+  const method = "POST";
+  const data = {
+    assignees: assigneeUsernames,
+  };
+
+  try {
+    await makeGitHubRequest(endpoint, method, data);
+    console.log(`Assignees added to the issue: ${assigneeUsernames.join(', ')}`);
+  } catch (error) {
+    console.error('Error adding assignees:', error);
+    throw error;
+  }
 }
 
 
-export async function removeAssignee(issue_number:any) {
-  return makeGitHubRequest(`/issues/${issue_number}/assignees`, "DELETE");
+export async function removeAssignee(issue_number: any, assignees: string[]) {
+  const endpoint = `/issues/${issue_number}/assignees`;
+  const method = "DELETE";
+  const data = {
+    assignees: assignees,
+  };
+
+  try {
+    await makeGitHubRequest(endpoint, method, data);
+    console.log(`Assignees removed from the issue.`);
+  } catch (error) {
+    console.error('Error removing assignees from the issue:', error);
+    throw error;
+  }
 }
+
