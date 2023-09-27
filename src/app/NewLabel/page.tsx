@@ -2,23 +2,25 @@
 import React, { useState } from "react";
 import { postNewLabel } from "../api/githubAPI";
 import Link  from "next/link";
+import { useRouter } from "next/navigation";
 
 function NewLabel() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    color: "f9d0c4", // Remove the "#" symbol
+    color: "f9d0c4",
     default: false,
   });
+
+  const router = useRouter();
 
   const handleInputChange = (event: { target: { name: any; value: any; }; }) => {
     const { name, value } = event.target;
 
     if (name === "color" && !/^#[0-9a-fA-F]{6}$/.test(value)) {
-      return; // Don't update the state if the color format is invalid
+      return; 
     }
 
-    // Remove the "#" symbol from the color value
     const colorValue = value.startsWith("#") ? value.substring(1) : value;
 
     setFormData({
@@ -45,6 +47,7 @@ function NewLabel() {
         color: "",
         default: false,
       });
+      router.push('/LabelsList')
     } catch (error) {
       console.error("Error creating new label:", error);
     }

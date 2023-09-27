@@ -1,5 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react";
+
 import {
   fetchLabels,
   UpdateLabel as updateLabelApi,
@@ -29,6 +30,7 @@ const modalStyles = {
 };
 
 function LabelsList() {
+
   const [labels, setLabels] = useState<Label[]>([]);
   const [selectedLabel, setSelectedLabel] = useState<Label | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
