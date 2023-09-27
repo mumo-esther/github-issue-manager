@@ -294,7 +294,7 @@ function IssueDetails({
                   {issue.labels.map((label: { id: React.Key | null | undefined; color: any; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; }) => (
                     <div className="flex flex-row items-center">
                       <Image
-                      key={label.id}
+                      key={issue.id}
                         src={issue.user.avatar_url || ''}
                         alt={issue?.user?.login || ''}
                         width={24}
