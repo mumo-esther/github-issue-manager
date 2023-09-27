@@ -219,6 +219,7 @@ function IssueDetails({
             <div className="flex flex-col sm:flex-row items-center mb-2 bg-gray-200 w-full">
               <div className="flex items-center sm:w-auto">
                 <Image
+                key={issue.id}
                   src={issue.user.avatar_url}
                   alt={issue.user.login}
                   width={32}
@@ -293,6 +294,7 @@ function IssueDetails({
                   {issue.labels.map((label: { id: React.Key | null | undefined; color: any; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; }) => (
                     <div className="flex flex-row items-center">
                       <Image
+                      key={label.id}
                         src={issue.user.avatar_url || ''}
                         alt={issue?.user?.login || ''}
                         width={24}
@@ -319,6 +321,7 @@ function IssueDetails({
                     {issue.assignees.map((assignee: { id: React.Key | null | undefined; avatar_url: string | undefined; login: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined; }) => (
                       <div key={assignee.id} className="flex items-center text-sm ml-7 mt-8">
                         <Image
+                        key={assignee.id}
                           src={assignee?.avatar_url || ''}
                           alt={issue?.user?.login || ''}
                           width={24}
@@ -339,6 +342,7 @@ function IssueDetails({
                   <div className="mt-2 space-x-1 flex flex-row text-sm items-center">
                     <Key size={16} className="p-2" />
                     <Image
+                    key={issue.id}
                       src={issue.user.avatar_url}
                       alt={issue.user.login}
                       className="w-6 h-6 rounded-full"
@@ -369,6 +373,7 @@ function IssueDetails({
                 <div>
                   <div className="flex items-center bg-gray-200 border rounded-md">
                     <Image
+                    key={comment.id}
                       src={comment.user.avatar_url}
                       alt={comment.user.login}
                       className="w-8 h-8 rounded-full mr-2"
