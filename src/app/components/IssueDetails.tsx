@@ -292,9 +292,9 @@ function IssueDetails({
 
                 <div className="mt-7 space-x-2 space-y-10 text-left ml-5 text-sm">
                   {issue.labels.map((label: { id: React.Key | null | undefined; color: any; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; }) => (
-                    <div className="flex flex-row items-center">
+                    <div className="flex flex-row items-center" key={`${label.id}-${label.name}`}>
                       <Image
-                      key={issue.id}
+                      
                         src={issue.user.avatar_url || ''}
                         alt={issue?.user?.login || ''}
                         width={24}
@@ -306,7 +306,7 @@ function IssueDetails({
                       </span>
                       added the
                       <span
-                        key={label.id}
+                        
                         className="px-2 py-1 text-xs rounded ml-2 mr-2"
                         style={{ backgroundColor: `#${label.color}`, color: "#fff" }}
                       >
