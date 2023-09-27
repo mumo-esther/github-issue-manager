@@ -127,6 +127,7 @@ function IssueList({ filter }: IssueListProps) {
                     <h1 className="text-sm text-blue-400">Assignees:</h1>
                     {issue.assignees.map((assignee: User) => (
                       <Image
+                      key={assignee.id}
                         src={assignee.avatar_url}
                         alt={assignee.login}
                         width={24}
