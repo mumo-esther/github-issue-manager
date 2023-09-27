@@ -8,8 +8,7 @@ function Header() {
   <h2 className="text-xl font-semibold mb-2">Label issues for new Contributors</h2>
   <p className="text-gray-600">
     Now, Github will help potential first-time contributors{' '}
-    <a href="https://github.com/mumo-esther/Js-best-practices/contribute" className="text-blue-500 hover:underline">
-      discover issues </a>
+      discover issues
        labelled with
       <button className="bg-blue-500 hover:bg-blue-600 text-white px-1 py-1 ml-2 rounded-md">
         good first issue
