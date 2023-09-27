@@ -83,6 +83,7 @@ function IssueDetails({
           user: {
             avatar_url: issue.user.avatar_url,
             login: issue.user.login,
+            id: issue.user.id
           },
           created_at: new Date().toISOString(),
           body: newCommentText,
@@ -236,14 +237,55 @@ function IssueDetails({
             </div>
             {activeButton === "view" ? (
               <div
-                className="ml-4 p-4 flex text-left"
+                className="ml-4 p-4 flex text-left flex-col"
                 style={{
                   whiteSpace: "pre-line",
                   paddingLeft: 0,
                 }}
               >
-                {issue.body}
+ {issue.body}
+                {/* Display Labels */}
+                <div className="mt-7 space-x-2 space-y-10 text-left ml-5 text-sm">
+                  {issue.labels.map((label: { id: React.Key | null | undefined; color: any; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; }) => (
+                    <div className="flex flex-row items-center">
+                       <img
+                    src={issue.user.avatar_url}
+                    className="w-6 h-6 rounded-full"
+                  />
+                  <span className="font-bold p-1">
+                     {issue.user.login}
+                     </span>
+                      added the
+                    <span
+                      key={label.id}
+                      className="px-2 py-1 text-xs rounded ml-2 mr-2"
+                      style={{ backgroundColor: `#${label.color}`, color: "#fff" }}
+                    >
+                     {label.name} 
+                    </span>
+                    label on {new Date(issue.created_at).toLocaleString()}
+                    </div>
+                  ))}
+                </div>
+                {issue.assignees.length > 0 && (
+            <div className="mt-2 space-x-2">
+              {issue.assignees.map((assignee: { id: React.Key | null | undefined; avatar_url: string | undefined; login: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined; }) => (
+                <div key={assignee.id} className="flex items-center text-sm ml-7 mt-8">
+                  <img
+                    src={assignee.avatar_url}
+                    className="w-6 h-6 rounded-full"
+                  />
+                  <span className="ml-2 font-bold p-1">{assignee.login}</span>
+                  <span className="p-1">
+                  selfassigned this on
+                  </span>
+                  {new Date(issue.created_at).toLocaleString()}
+                </div>
+              ))}
+            </div>
+          )}
               </div>
+
             ) : (
               <textarea
                 value={editableContent}

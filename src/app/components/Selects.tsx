@@ -1,20 +1,25 @@
-// Selects.tsx
-
 import React, { useState, useEffect } from 'react';
 import { Label, Milestone, Assignee } from '../interfaces/issueTypes';
 import { fetchAssignees, fetchLabels, fetchMilestones } from '../api/githubAPI';
+import { useFilterContext } from '../context/FilterContext';
 
 interface SelectsProps {
   onFilterChange: (label: string | null, assignee: string | null, milestone: string | null) => void;
 }
 
 function Selects({ onFilterChange }: SelectsProps) {
-  const [labels, setLabels] = useState<Label[]>([]);
+  const {
+    selectedLabel,
+    setSelectedLabel,
+    selectedMilestone,
+    setSelectedMilestone,
+    selectedAssignee,
+    setSelectedAssignee,
+  } = useFilterContext();
+
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [assignees, setAssignees] = useState<Assignee[]>([]);
-  const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
-  const [selectedMilestone, setSelectedMilestone] = useState<string | null>(null);
-  const [selectedAssignee, setSelectedAssignee] = useState<string | null>(null);
+  const [labels, setLabels] = useState<Label[]>([]);
 
   useEffect(() => {
     fetchLabels().then((labelsData: Label[]) => setLabels(labelsData));
@@ -22,22 +27,24 @@ function Selects({ onFilterChange }: SelectsProps) {
     fetchAssignees().then((assigneesData: Assignee[]) => setAssignees(assigneesData));
   }, []);
 
-  const handleLabelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedLabel = e.target.value || null;
-    setSelectedLabel(selectedLabel);
+  useEffect(() => {
+   
     onFilterChange(selectedLabel, selectedAssignee, selectedMilestone);
+  }, [selectedLabel, selectedAssignee, selectedMilestone, onFilterChange]);
+
+  const handleLabelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedLabel = e.target.value;
+    setSelectedLabel(selectedLabel);
   };
 
   const handleMilestoneChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedMilestone = e.target.value || null;
+    const selectedMilestone = e.target.value;
     setSelectedMilestone(selectedMilestone);
-    onFilterChange(selectedLabel, selectedAssignee, selectedMilestone);
   };
 
   const handleAssigneeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedAssignee = e.target.value || null;
+    const selectedAssignee = e.target.value;
     setSelectedAssignee(selectedAssignee);
-    onFilterChange(selectedLabel, selectedAssignee, selectedMilestone);
   };
 
   return (
@@ -45,6 +52,7 @@ function Selects({ onFilterChange }: SelectsProps) {
       <select
         className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         onChange={handleLabelChange}
+        value={selectedLabel}
       >
         <option value="">Label</option>
         {labels.map((label) => (
@@ -53,9 +61,10 @@ function Selects({ onFilterChange }: SelectsProps) {
           </option>
         ))}
       </select>
-      <select
+     {/**<select
         className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         onChange={handleMilestoneChange}
+        value={selectedMilestone || ''}
       >
         <option value="">Milestones</option>
         {milestones.map((milestone) => (
@@ -63,10 +72,11 @@ function Selects({ onFilterChange }: SelectsProps) {
             {milestone.title}
           </option>
         ))}
-      </select>
+      </select> */} 
       <select
         className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         onChange={handleAssigneeChange}
+        value={selectedAssignee || ''}
       >
         <option value="">Assignee</option>
         {assignees.map((assignee) => (
