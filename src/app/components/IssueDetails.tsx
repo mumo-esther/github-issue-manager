@@ -11,7 +11,9 @@ import {
   DeleteComment,
 } from "../api/githubAPI";
 import DetailsSelect from "./DetailsSelect";
-import { Lock, Unlock, Edit3, Save, Delete, Home } from "react-feather";
+import { Lock, Unlock, Edit3, Save, Delete, Home, Key } from "react-feather";
+import Swal from "sweetalert2";
+import { formatDistanceToNow } from 'date-fns';
 
 function IssueDetails({
   issue,
@@ -26,6 +28,7 @@ function IssueDetails({
   const [isLocked, setIsLocked] = useState<boolean>(false);
   const [editableCommentContent, setEditableCommentContent] = useState<string>("");
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [lockedAt, setLockedAt] = useState<Date | null>(null);
 
   useEffect(() => {
     async function fetchComments() {
@@ -63,7 +66,12 @@ function IssueDetails({
             body: editableContent,
           }));
 
-          alert("Issue has been successfully updated!");
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Issue has been successfully updated!',
+          });
+
         }
         setActiveButton("view");
       }
@@ -91,7 +99,11 @@ function IssueDetails({
         setComments([...comments, newComment]);
         setIssues([updatedIssue]);
       } else {
-        console.error("Cannot post a comment: issue is locked or issueNumber is null.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Cannot post a comment: issue is locked or issueNumber is null.',
+        });
       }
     } catch (error) {
       console.error("Error posting new comment:", error);
@@ -103,9 +115,15 @@ function IssueDetails({
       if (issueNumber !== null) {
         await lockIssue(issueNumber);
         setIsLocked(true);
+        setLockedAt(new Date());
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Issue has been locked and limited to collaborators!',
+        });
       }
     } catch (error) {
-      console.error("Error locking issue:", error);
+      console.error('Error locking issue:', error);
     }
   };
 
@@ -114,9 +132,15 @@ function IssueDetails({
       if (issueNumber !== null) {
         await unlockIssue(issueNumber);
         setIsLocked(false);
+        setLockedAt(new Date());
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Issue has been unlocked!',
+        });
       }
     } catch (error) {
-      console.error("Error unlocking issue:", error);
+      console.error('Error unlocking issue:', error);
     }
   };
 
@@ -149,7 +173,11 @@ function IssueDetails({
             : comment
         );
         setComments(updatedComments);
-        alert("Comment has been successfully edited!");
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Comment has been successfully edited!',
+        });
       }
       setEditableCommentContent("");
       setEditingCommentId(null);
@@ -163,7 +191,11 @@ function IssueDetails({
       await DeleteComment(commentId);
       const updatedComments = comments.filter((comment) => comment.id !== commentId);
       setComments(updatedComments);
-      alert("Comment has been successfully deleted!");
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Comment has been successfully deleted!',
+      });
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
@@ -171,30 +203,34 @@ function IssueDetails({
 
   return (
     <div className="fixed inset-0 bg-gray-100 flex items-center justify-center">
-      <div className="bg-white w-screen h-screen rounded-lg shadow-lg p-8 overflow-y-auto">
+      <div className="bg-white w-full  h-full rounded-lg shadow-lg p-8 overflow-y-auto">
         <div className="flex justify-between p-4 border-b">
           <h1 className="text-2xl font-semibold">
             {issue.title} (#{issue.number})
           </h1>
           <DetailsSelect issueNumber={issueNumber} />
           <button onClick={onClose} className="text-blue-500 hover:text-gray-700">
-            <Home size={30} />
+            <Home size={25} />
           </button>
         </div>
         <div className="p-4">
           <div className="border rounded-md border-blue-500">
-            <div className="flex items-center mb-2 bg-gray-200">
-              <img src={issue.user.avatar_url} alt={issue.user.login} className="w-8 h-8 rounded-full mr-2" />
-              <span className="text-gray-700 font-semibold">{issue.user.login}</span>
-              <span className="text-gray-500 ml-2">
+            <div className="flex flex-col sm:flex-row items-center mb-2 bg-gray-200 w-full">
+              <div className="flex items-center sm:w-auto">
+                <img src={issue.user.avatar_url} alt={issue.user.login} className="w-8 h-8 rounded-full mr-2" />
+                <span className="text-gray-700 font-semibold">{issue.user.login}</span>
+              </div>
+              <div className="mt-2 sm:mt-0 sm:flex-1 text-gray-500">
                 opened this issue on {new Date(issue.created_at).toLocaleString()}
-              </span>
-              <span className="p-4"> Comments: {issue.comments}</span>
-              <div className="flex justify-end flex-1">
+              </div>
+              <div className="mt-2 sm:mt-0 p-4 sm:p-0 text-gray-500">
+                Comments: {issue.comments}
+              </div>
+              <div className="mt-2 sm:mt-0 flex items-center">
                 {activeButton === "view" ? (
                   <button
                     onClick={() => handleButtonClick("edit")}
-                    className="bg-white hover:bg-blue-600 text-black px-4 py-2 rounded-md ml-10"
+                    className="bg-white hover:bg-blue-600 text-black px-4 py-2 rounded-md ml-0 sm:ml-10"
                   >
                     <Edit3 />
                   </button>
@@ -202,7 +238,7 @@ function IssueDetails({
                   <>
                     <button
                       onClick={handleEditSave}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-md ml-10"
+                      className="bg-blue-600 text-white px-2 py-2 rounded-md ml-2"
                     >
                       <Save size={16} />
                     </button>
@@ -223,7 +259,7 @@ function IssueDetails({
                     onClick={handleUnlockIssue}
                     className="bg-green-500 text-white px-4 py-2 rounded-md ml-2"
                   >
-                  <Unlock size={16}/>
+                    <Unlock size={16} />
                   </button>
                 ) : (
                   <button
@@ -235,6 +271,7 @@ function IssueDetails({
                 )}
               </div>
             </div>
+
             {activeButton === "view" ? (
               <div
                 className="ml-4 p-4 flex text-left flex-col"
@@ -243,49 +280,63 @@ function IssueDetails({
                   paddingLeft: 0,
                 }}
               >
- {issue.body}
-                {/* Display Labels */}
+                {issue.body}
+
                 <div className="mt-7 space-x-2 space-y-10 text-left ml-5 text-sm">
                   {issue.labels.map((label: { id: React.Key | null | undefined; color: any; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; }) => (
                     <div className="flex flex-row items-center">
-                       <img
-                    src={issue.user.avatar_url}
-                    className="w-6 h-6 rounded-full"
-                  />
-                  <span className="font-bold p-1">
-                     {issue.user.login}
-                     </span>
+                      <img
+                        src={issue.user.avatar_url}
+                        className="w-6 h-6 rounded-full"
+                      />
+                      <span className="font-bold p-1">
+                        {issue.user.login}
+                      </span>
                       added the
-                    <span
-                      key={label.id}
-                      className="px-2 py-1 text-xs rounded ml-2 mr-2"
-                      style={{ backgroundColor: `#${label.color}`, color: "#fff" }}
-                    >
-                     {label.name} 
-                    </span>
-                    label on {new Date(issue.created_at).toLocaleString()}
+                      <span
+                        key={label.id}
+                        className="px-2 py-1 text-xs rounded ml-2 mr-2"
+                        style={{ backgroundColor: `#${label.color}`, color: "#fff" }}
+                      >
+                        {label.name}
+                      </span>
+                      label on {new Date(issue.created_at).toLocaleString()}
                     </div>
                   ))}
                 </div>
                 {issue.assignees.length > 0 && (
-            <div className="mt-2 space-x-2">
-              {issue.assignees.map((assignee: { id: React.Key | null | undefined; avatar_url: string | undefined; login: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined; }) => (
-                <div key={assignee.id} className="flex items-center text-sm ml-7 mt-8">
-                  <img
-                    src={assignee.avatar_url}
-                    className="w-6 h-6 rounded-full"
-                  />
-                  <span className="ml-2 font-bold p-1">{assignee.login}</span>
-                  <span className="p-1">
-                  selfassigned this on
-                  </span>
-                  {new Date(issue.created_at).toLocaleString()}
-                </div>
-              ))}
-            </div>
-          )}
-              </div>
+                  <div className="mt-2 space-x-2">
+                    {issue.assignees.map((assignee: { id: React.Key | null | undefined; avatar_url: string | undefined; login: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined; }) => (
+                      <div key={assignee.id} className="flex items-center text-sm ml-7 mt-8">
+                        <img
+                          src={assignee.avatar_url}
+                          className="w-6 h-6 rounded-full"
+                        />
+                        <span className="ml-2 font-bold p-1">{assignee.login}</span>
+                        <span className="p-1">
+                          selfassigned this on
+                        </span>
+                        {new Date(issue.created_at).toLocaleString()}
+                      </div>
+                    ))}
+                  </div>
+                )}
 
+                {isLocked && (
+                  <div className="mt-2 space-x-1 flex flex-row text-sm items-center">
+                    <Key size={16} className="p-2" />
+                    <img
+                          src={issue.user.avatar_url}
+                          className="w-6 h-6 rounded-full"
+                        />
+                        <span className="ml-2 font-bold p-1">{issue.user.login}</span>
+                        <span className="p-1 ">
+                        locked and limited conversation to collaborators
+                        </span>
+                        {new Date(issue.created_at).toLocaleString()} 
+                  </div>
+                )}
+              </div>
             ) : (
               <textarea
                 value={editableContent}
@@ -298,9 +349,9 @@ function IssueDetails({
           </div>
           {comments.map((comment) => (
             <div key={comment.id} className="border-t p-4">
-              <div className="w-full mb-4">
+              <div className="w-full mb-4 ">
                 <div>
-                  <div className="flex items-center">
+                  <div className="flex items-center bg-gray-200 border rounded-md">
                     <img
                       src={comment.user.avatar_url}
                       alt={comment.user.login}
@@ -318,7 +369,7 @@ function IssueDetails({
                       <textarea
                         value={editableCommentContent}
                         onChange={(e) => setEditableCommentContent(e.target.value)}
-                        className="h-40 w-full p-2 border rounded-md mt-2"
+                        className="h-40 w-full p-2 border rounded-md  mt-2"
                         placeholder="Edit comment..."
                       ></textarea>
                       <div className="mt-2 flex items-center">
@@ -326,7 +377,7 @@ function IssueDetails({
                           onClick={() => handleSaveEditedComment(comment.id)}
                           className="bg-blue-600 text-white px-2 py-1 rounded-md mr-2"
                         >
-                         < Save size={26}/>
+                          < Save size={26} />
                         </button>
                         <button
                           onClick={() => handleEditComment(comment.id)}
@@ -338,24 +389,24 @@ function IssueDetails({
                     </>
                   ) : (
                     <>
-                    <div className="flex justify-end">
+                      <div className="flex justify-end">
                         <button
                           onClick={() => handleEditComment(comment.id)}
                           className="text-blue-600 hover:underline mr-2"
                         >
-                           <Edit3 />
+                          <Edit3 />
                         </button>
                         <button
                           onClick={() => handleDeleteComment(comment.id)}
                           className="text-red-600 hover:underline"
                         >
-                          <Delete size={25}/>
+                          <Delete size={25} />
                         </button>
                       </div>
-                      <div className="w-full ml-2 p-2 border rounded-md text-gray-900 bg-gray-100 text-left whitespace-pre-wrap">
+                      <div className="w-full ml-2 p-2 border rounded-md border-blue-400 text-gray-900 bg-white text-left whitespace-pre-wrap">
                         {comment.body}
                       </div>
-                      
+
                     </>
                   )}
                 </div>

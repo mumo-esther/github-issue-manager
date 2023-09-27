@@ -3,7 +3,7 @@ import IssueHeader from "./IssueHeader";
 import IssueDetails from "./IssueDetails";
 import { useSearchContext } from "../context/SearchContext";
 import { useFilterContext } from "../context/FilterContext";
-import { Issue, IssueListProps, Label, User } from "../interfaces/issueTypes"; // Import necessary types
+import { Issue, IssueListProps, Label, User } from "../interfaces/issueTypes"; 
 
 function IssueList({ filter }: IssueListProps) {
   const [issues, setIssues] = useState<Issue[]>([]);
@@ -80,18 +80,16 @@ function IssueList({ filter }: IssueListProps) {
         </div>
       ) : (
         <div
-          className={`border border-gray-500 rounded-md text-center pb-${
-            issues.length * 8
-          } pt-0 px-0 relative`}
+          className={`border border-gray-500 rounded-md text-center pb-${issues.length * 8
+            } pt-0 px-0 relative`}
         >
           <IssueHeader />
           <div>
             {openIssues.map((issue, index) => (
               <div
                 key={issue.id}
-                className={`flex flex-col items-start mb-4 mt-2 ${
-                  index === openIssues.length - 1 ? "" : "border-b"
-                } hover:bg-gray-200 p-4 rounded-md cursor-pointer`}
+                className={`flex flex-col items-start mb-4 mt-2 ${index === openIssues.length - 1 ? "" : "border-b"
+                  } hover:bg-gray-200 p-4 rounded-md cursor-pointer`}
                 onClick={() => handleIssueClick(issue)}
               >
                 <div className="flex items-center space-x-4">
@@ -109,8 +107,7 @@ function IssueList({ filter }: IssueListProps) {
                   {new Date(issue.created_at).toLocaleString()} by{" "}
                   {issue.user.login}
                 </p>
-                
-                {/* Display Labels */}
+
                 <div className="mt-2 ml-16 space-x-2">
                   {issue.labels.map((label: Label) => (
                     <span
@@ -123,7 +120,7 @@ function IssueList({ filter }: IssueListProps) {
                   ))}
                 </div>
 
-                {/* Display Assignees */}
+
                 {issue.assignees.length > 0 && (
                   <div className="mt-2 ml-16 space-x-2 flex flex-row">
                     <h1 className="text-sm text-blue-400">Assignees:</h1>
@@ -138,7 +135,7 @@ function IssueList({ filter }: IssueListProps) {
                   </div>
                 )}
 
-                {/* Display Comments */}
+
                 <div className="mt-2 ml-16 flex items-center space-x-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

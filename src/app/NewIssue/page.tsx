@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import {postNewIssue} from "../api/githubAPI";
 import { useRouter } from "next/navigation";
-import Selects from "../components/Selects";
 import Link from "next/link";
 
 function NewIssue() {
@@ -44,9 +43,6 @@ function NewIssue() {
     <div className="border rounded-md m-10">
       <form onSubmit={handleSubmit}>
         <div>
-          <Selects onFilterChange={function (label: string | null, assignee: string | null, milestone: string | null): void {
-            throw new Error("Function not implemented.");
-          } } />
         </div>
         <input
           name="title"
@@ -66,16 +62,7 @@ function NewIssue() {
           >
             Write
           </button>
-          <button
-            className={`${
-              activeButton === "preview"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-black"
-            } px-4 py-2 rounded-md ml-3 hover:bg-blue-600`}
-            onClick={() => handleButtonClick("preview")}
-          >
-            Preview
-          </button>
+         
         </div>
         <textarea
           name="body"

@@ -70,7 +70,6 @@ function MilestonesList() {
     }
   };
   
-  
   const handleEditMilestone = async (editedMilestone: Milestone) => {
     try {
       const updatedMilestone = { ...editedMilestone, title: editedMilestoneTitle };
@@ -91,8 +90,8 @@ function MilestonesList() {
 
   return (
     <div className="container border rounded-md border-blue-500 p-4 mt-4">
-      <div className="flex justify-between items-center mb-5">
-        <div>
+      <div className="flex justify-between items-center mb-5 flex-wrap md:flex-nowrap">
+        <div className="mb-4 md:mb-0">
           <h1 className="text-3xl font-semibold">Milestones</h1>
           <div className="flex space-x-3 mt-2">
             <div className="flex items-center space-x-4">
@@ -150,20 +149,18 @@ function MilestonesList() {
                 #{milestone.number} opened on {new Date(milestone.updated_at).toLocaleDateString()}
               </span>
               <div className="flex items-center space-x-2">
-
-              <button
+                <button
                   className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md"
                   onClick={() => handleMilestoneClick(milestone)}
                 >
-                 < Edit3 />
+                  <Edit3 />
                 </button>
                 <button
                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md ml-2"
                   onClick={() => handleDeleteMilestone(milestone)}
                 >
-                 < Delete size={20}/>
+                  <Delete size={20}/>
                 </button>
-
               </div>
             </div>
           ))}
@@ -206,7 +203,7 @@ function MilestonesList() {
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
                 onClick={() => handleEditMilestone(selectedMilestone)}
               >
-               < Save />
+                <Save />
               </button>
             </div>
           </>

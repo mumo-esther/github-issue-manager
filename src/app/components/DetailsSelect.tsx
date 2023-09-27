@@ -81,8 +81,8 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
   
 
   return (
-    <div className="flex items-center space-x-4">
-      <div>
+    <div className="flex flex-wrap justify-start items-center space-y-2 sm:space-y-0 sm:space-x-2">
+      <div className="">
         <select
           className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={selectedLabel || ''}
@@ -109,7 +109,7 @@ function DetailsSelect({ issueNumber }: DetailsSelectProps) {
         <Minus size={16} /> 
       </button>
 
-      <div>
+      <div className="">
         <select
           className="bg-white text-gray rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={selectedAssignee || ''}
