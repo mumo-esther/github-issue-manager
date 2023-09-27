@@ -3,7 +3,8 @@ import IssueHeader from "./IssueHeader";
 import IssueDetails from "./IssueDetails";
 import { useSearchContext } from "../context/SearchContext";
 import { useFilterContext } from "../context/FilterContext";
-import { Issue, IssueListProps, Label, User } from "../interfaces/issueTypes"; 
+import { Issue, IssueListProps, Label, User } from "../interfaces/issueTypes";
+import Image from 'next/image';
 
 function IssueList({ filter }: IssueListProps) {
   const [issues, setIssues] = useState<Issue[]>([]);
@@ -74,7 +75,7 @@ function IssueList({ filter }: IssueListProps) {
               <div className="w-2 h-2 bg-black rounded-full"></div>
             </div>
             <p className="font-bold">
-              There aren't any results matching your Search.
+              There aren&apos;t any results matching your Search.
             </p>
           </div>
         </div>
@@ -125,10 +126,11 @@ function IssueList({ filter }: IssueListProps) {
                   <div className="mt-2 ml-16 space-x-2 flex flex-row">
                     <h1 className="text-sm text-blue-400">Assignees:</h1>
                     {issue.assignees.map((assignee: User) => (
-                      <img
-                        key={assignee.id}
+                      <Image
                         src={assignee.avatar_url}
                         alt={assignee.login}
+                        width={24}
+                        height={24}
                         className="w-6 h-6 rounded-full"
                       />
                     ))}
@@ -174,7 +176,7 @@ function IssueList({ filter }: IssueListProps) {
               <div className="w-2 h-2 bg-black rounded-full"></div>
             </div>
             <p className="font-bold">
-              There aren't any open issues.
+              There aren&apos;t any open issues.
             </p>
           </div>
         </div>
