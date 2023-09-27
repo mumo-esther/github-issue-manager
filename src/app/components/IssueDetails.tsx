@@ -218,7 +218,13 @@ function IssueDetails({
           <div className="border rounded-md border-blue-500">
             <div className="flex flex-col sm:flex-row items-center mb-2 bg-gray-200 w-full">
               <div className="flex items-center sm:w-auto">
-                <Image src={issue.user.avatar_url} alt={issue.user.login} className="w-8 h-8 rounded-full mr-2" />
+                <Image
+                  src={issue.user.avatar_url}
+                  alt={issue.user.login}
+                  width={32}
+                  height={32}
+                  className="w-8 h-8 rounded-full mr-2"
+                />
                 <span className="text-gray-700 font-semibold">{issue.user.login}</span>
               </div>
               <div className="mt-2 sm:mt-0 sm:flex-1 text-gray-500">
@@ -287,9 +293,10 @@ function IssueDetails({
                   {issue.labels.map((label: { id: React.Key | null | undefined; color: any; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; }) => (
                     <div className="flex flex-row items-center">
                       <Image
-                      key={label.id}
                         src={issue.user.avatar_url || ''}
                         alt={issue?.user?.login || ''}
+                        width={24}
+                        height={24}
                         className="w-6 h-6 rounded-full"
                       />
                       <span className="font-bold p-1">
@@ -314,6 +321,8 @@ function IssueDetails({
                         <Image
                           src={assignee?.avatar_url || ''}
                           alt={issue?.user?.login || ''}
+                          width={24}
+                          height={24}
                           className="w-6 h-6 rounded-full"
                         />
                         <span className="ml-2 font-bold p-1">{assignee.login}</span>
@@ -333,6 +342,8 @@ function IssueDetails({
                       src={issue.user.avatar_url}
                       alt={issue.user.login}
                       className="w-6 h-6 rounded-full"
+                      width={32}
+                      height={32}
                     />
                     <span className="ml-2 font-bold p-1">{issue.user.login}</span>
                     <span className="p-1 ">
@@ -361,6 +372,8 @@ function IssueDetails({
                       src={comment.user.avatar_url}
                       alt={comment.user.login}
                       className="w-8 h-8 rounded-full mr-2"
+                      width={32}
+                      height={32}
                     />
                     <span className="text-gray-700 font-semibold">
                       {comment.user.login}
