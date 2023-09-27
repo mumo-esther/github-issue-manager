@@ -1,4 +1,6 @@
 export interface Issue {
+    assignees: any;
+    labels: any;
     id: number;
     title: string;
     created_at: Date;
@@ -9,9 +11,10 @@ export interface Issue {
     body: string;
   }
   
-  interface User {
+  export interface User {
     login: string;
     avatar_url: string;
+    id:number
   }
   
  export interface IssueDetailsProps {
@@ -88,3 +91,11 @@ export interface Issue {
     description: string;
     default: boolean;
   }
+
+ export  interface IssueComment {
+    id: number;
+    user: User,
+    created_at: string; 
+    body: string;
+  }
+  

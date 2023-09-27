@@ -1,50 +1,41 @@
 import React, { useEffect, useState } from "react";
 import IssueHeader from "./IssueHeader";
-import { Issue, IssueListProps } from "../interfaces/issueTypes";
 import IssueDetails from "./IssueDetails";
 import { useSearchContext } from "../context/SearchContext";
 import { useFilterContext } from "../context/FilterContext";
+import { Issue, IssueListProps, Label, User } from "../interfaces/issueTypes"; // Import necessary types
 
 function IssueList({ filter }: IssueListProps) {
   const [issues, setIssues] = useState<Issue[]>([]);
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
   const [selectedIssueNumber, setSelectedIssueNumber] = useState<number | null>(
     null
-  ); // State to save the selected issue's issue_number
+  );
   const { searchQuery } = useSearchContext();
-  const { filter: appliedFilter,
-    selectedMilestone,
-    selectedLabel,
-    selectedAssignee,
-   } = useFilterContext();
+  const { filter: appliedFilter, selectedLabel, selectedAssignee, selectedMilestone } = useFilterContext();
 
   useEffect(() => {
     const fetchIssues = async () => {
       let apiUrl = "https://api.github.com/repos/mumo-esther/Js-best-practices/issues";
+      const params = new URLSearchParams();
 
-      const queryParams = [];
-
-      if (appliedFilter === "open") {
-        apiUrl += "?state=open";
-      } else if (appliedFilter === "closed") {
-        apiUrl += "?state=closed";
-      }
-
-      if (selectedMilestone) {
-        queryParams.push(`milestone=${selectedMilestone}`);
+      if (appliedFilter === "open" || appliedFilter === "closed") {
+        params.append("state", appliedFilter);
       }
 
       if (selectedLabel) {
-        queryParams.push(`labels=${selectedLabel}`);
+        params.append("labels", selectedLabel);
       }
 
       if (selectedAssignee) {
-        queryParams.push(`assignee=${selectedAssignee}`);
+        params.append("assignee", selectedAssignee);
       }
 
-      if (queryParams.length > 0) {
-        apiUrl += "?" + queryParams.join("&");
+      if (selectedMilestone) {
+        params.append("milestone", selectedMilestone);
       }
+
+      apiUrl += `?${params.toString()}`;
 
       try {
         const response = await fetch(apiUrl);
@@ -59,61 +50,47 @@ function IssueList({ filter }: IssueListProps) {
     };
 
     fetchIssues();
-  }, [appliedFilter, selectedMilestone, selectedLabel, selectedAssignee]);
-
-  const paddingBottom = issues.length > 0 ? `pb-${issues.length * 8}` : "";
+  }, [appliedFilter, selectedLabel, selectedAssignee, selectedMilestone]);
 
   const handleIssueClick = (issue: Issue) => {
     setSelectedIssue(issue);
-    setSelectedIssueNumber(issue.number); // Save the selected issue's issue_number
+    setSelectedIssueNumber(issue.number);
   };
 
   const handleCloseIssueDetails = () => {
     setSelectedIssue(null);
-    setSelectedIssueNumber(null); // Clear the selected issue's issue_number
+    setSelectedIssueNumber(null);
   };
 
-  const filteredIssues = issues.filter((issue) => {
-    const isOpen = issue.state === "open";
-    const isClosed = issue.state === "closed";
-
-    if (filter === "open" && !isOpen) {
-      return false;
-    }
-    if (filter === "closed" && !isClosed) {
-      return false;
-    }
-
-    if (searchQuery) {
-      const searchKeywords = searchQuery.toLowerCase().split(" ");
-      const title = issue.title.toLowerCase();
-      const body = issue.body ? issue.body.toLowerCase() : "";
-
-      if (
-        !searchKeywords.every(
-          (keyword) => title.includes(keyword) || body.includes(keyword)
-        )
-      ) {
-        return false;
-      }
-    }
-
-    return true;
-  });
+  const openIssues = issues.filter((issue) => issue.state === "open");
 
   return (
     <>
-      {filteredIssues.length > 0 ? (
+      {openIssues.length === 0 ? (
+        <div className="border border-gray-500 rounded-md text-center pb-80 pt-0 px-0 relative">
+          <IssueHeader />
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <div className="w-12 h-12 border border-black rounded-full flex items-center justify-center mb-4">
+              <div className="w-2 h-2 bg-black rounded-full"></div>
+            </div>
+            <p className="font-bold">
+              There aren't any results matching your Search.
+            </p>
+          </div>
+        </div>
+      ) : (
         <div
-          className={`border border-gray-500 rounded-md text-center ${paddingBottom} pt-0 px-0 relative`}
+          className={`border border-gray-500 rounded-md text-center pb-${
+            issues.length * 8
+          } pt-0 px-0 relative`}
         >
           <IssueHeader />
           <div>
-            {filteredIssues.map((issue, index) => (
+            {openIssues.map((issue, index) => (
               <div
                 key={issue.id}
                 className={`flex flex-col items-start mb-4 mt-2 ${
-                  index === filteredIssues.length - 1 ? "" : "border-b"
+                  index === openIssues.length - 1 ? "" : "border-b"
                 } hover:bg-gray-200 p-4 rounded-md cursor-pointer`}
                 onClick={() => handleIssueClick(issue)}
               >
@@ -132,6 +109,53 @@ function IssueList({ filter }: IssueListProps) {
                   {new Date(issue.created_at).toLocaleString()} by{" "}
                   {issue.user.login}
                 </p>
+                
+                {/* Display Labels */}
+                <div className="mt-2 ml-16 space-x-2">
+                  {issue.labels.map((label: Label) => (
+                    <span
+                      key={label.id}
+                      className="px-2 py-1 text-sm rounded"
+                      style={{ backgroundColor: `#${label.color}`, color: "#fff" }}
+                    >
+                      {label.name}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Display Assignees */}
+                {issue.assignees.length > 0 && (
+                  <div className="mt-2 ml-16 space-x-2 flex flex-row">
+                    <h1 className="text-sm text-blue-400">Assignees:</h1>
+                    {issue.assignees.map((assignee: User) => (
+                      <img
+                        key={assignee.id}
+                        src={assignee.avatar_url}
+                        alt={assignee.login}
+                        className="w-6 h-6 rounded-full"
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {/* Display Comments */}
+                <div className="mt-2 ml-16 flex items-center space-x-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-6 h-6"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="16" x2="12" y2="12" />
+                    <line x1="12" y1="8" x2="12" y2="8" />
+                  </svg>
+                  <span>{issue.comments} comments</span>
+                </div>
               </div>
             ))}
           </div>
@@ -139,18 +163,22 @@ function IssueList({ filter }: IssueListProps) {
             <IssueDetails
               issue={selectedIssue}
               onClose={handleCloseIssueDetails}
-              issueNumber={selectedIssueNumber} // Pass the issue_number as a prop
+              issueNumber={selectedIssueNumber}
             />
           )}
         </div>
-      ) : (
+      )}
+
+      {openIssues.length === 0 && issues.length === 0 && (
         <div className="border border-gray-500 rounded-md text-center pb-80 pt-0 px-0 relative">
           <IssueHeader />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <div className="w-12 h-12 border border-black rounded-full flex items-center justify-center mb-4">
               <div className="w-2 h-2 bg-black rounded-full"></div>
             </div>
-            <p className="font-bold">There aren’t any open issues.</p>
+            <p className="font-bold">
+              There aren't any open issues.
+            </p>
           </div>
         </div>
       )}
