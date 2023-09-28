@@ -10,7 +10,7 @@ function SearchBar() {
   };
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center" data-testid="search-button">
       <div className="relative">
         <input
           type="text"

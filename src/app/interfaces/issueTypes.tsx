@@ -3,10 +3,10 @@ export interface Issue {
     labels: any;
     id: number;
     title: string;
-    created_at: Date;
+    created_at: any;
     user: User;
     number: number;
-    comments: string;
+    comments: any;
     state: string;
     body: string;
   }
