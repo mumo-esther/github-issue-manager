@@ -1,34 +1,168 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📗 Table of Contents
 
-## Getting Started
+- [📗 Table of Contents](#-table-of-contents)
+- [📖 Github Issue Manager](#-about-project)
+- [💻 Live Demo](#live-demo)
+  - [🛠 Built With ](#-built-with-)
+    - [Tech Stack ](#tech-stack-)
+    - [Key Features ](#key-features-)
+  - [💻 Getting Started ](#-getting-started-)
+    - [Prerequisites](#prerequisites)
+    - [Setup](#setup)
+    - [Install](#install)
+    - [Usage](#usage)
+    - [Run tests](#run-tests)
+  - [👥 Authors ](#-authors-)
+  - [🔭 Future Features ](#-future-features-)
+  - [🤝 Contributing ](#-contributing-)
+  - [⭐️ Show your support ](#️-show-your-support-)
+  - [🙏 Acknowledgments ](#-acknowledgments-)
+  - [❓ FAQ (OPTIONAL) ](#-faq-optional-)
+  - [📝 License ](#-license-)
 
-First, run the development server:
+<!-- PROJECT DESCRIPTION -->
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+# 📖 Github Issue Manager<a name="about-project"></a>
+
+> The GitHub Issue Manager Web App is a powerful tool for managing and organizing GitHub issues, providing a user-friendly interface to streamline issue tracking and collaboration for your software projects.
+
+### 💻 Live Demo <a name="live-demo"></a>
+[Github Issue Manager](https://github-issue-manager-9xki06vnz-mumo-esther.vercel.app/)
+
+## 🛠 Built With <a name="built-with"></a>
+
+### Tech Stack <a name="tech-stack"></a>
+
+<details>
+  <summary>Client</summary>
+  <ul>
+    <li>Nextjs</li>
+    <li>Tailwind Css</li>
+    <li>Typescript</li>
+  </ul>
+</details>
+
+<details>
+  <summary>Backend</summary>
+  <ul>
+    <li>>Github API</li>
+  </ul>
+</details>
+
+
+### Key Features <a name="key-features"></a>
+
+- **Issue List:** View and filter issues based on their status, labels, assignees, and milestones.
+- **Create New Issue:** Easily create new issues with customizable labels, descriptions, and other details.
+- **Issue Details:** Access detailed information about individual issues, including comments and assignees.
+- **Label Management:** Create, update, and delete labels for better issue categorization.
+- **Assignee Management:** Add and remove assignees for efficient issue ownership.
+- **Milestone Tracking:** Keep track of milestones and assign issues to them.
+- **Search Functionality:** Quickly find specific issues using a powerful search feature.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## 💻 Getting Started <a name="getting-started"></a>
+
+### Prerequisites
+
+- Node.js and npm installed on your development machine.
+
+### Setup
+
+```
+git clone https://github.com/mumo-esther/github-issue-manager
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Install this project with:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```
+cd github-issue-manager
 
-## Learn More
+npm install
 
-To learn more about Next.js, take a look at the following resources:
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Usage
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+To run the project, execute the following command:
 
-## Deploy on Vercel
+```
+  npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Run tests
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+  npm test
+```
+
+<!-- AUTHORS -->
+
+## 👥 Authors <a name="authors"></a>
+
+👤 **Esther Mawioo 💻**
+
+- GitHub: [@mumo-esther](https://github.com/mumo-esther/)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- FUTURE FEATURES -->
+
+## 🔭 Future Features <a name="future-features"></a>
+
+- **Login**
+- **Dashboard**
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTRIBUTING -->
+
+## 🤝 Contributing <a name="contributing"></a>
+
+Contributions, issues, and feature requests are welcome!
+
+Feel free to check the [issues page](../../issues/).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- SUPPORT -->
+
+## ⭐️ Show your support <a name="support"></a>
+
+If you like this project, please clone it and try it. I know you're going to love it
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- ACKNOWLEDGEMENTS -->
+
+## 🙏 Acknowledgments <a name="acknowledgements"></a>
+
+Special thanks to the GitHub API for making this project possible.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- FAQ (optional) -->
+
+## ❓ FAQ (OPTIONAL) <a name="faq"></a>
+
+- **Can I fork the project and make a contribution?**
+
+  Of course you can! First fork it and contribute to it.
+
+- **How should I ask a pull request**
+
+  - Step 1 : Click on the pull request button
+  - Step 2 : create pull request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- LICENSE -->
+
+## 📝 License <a name="license"></a>
+
+This project is [MIT]('https://github.com/mumo-esther/github-issue-manager/blob/master/LICENSE') licensed.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
