@@ -1,9 +1,10 @@
 "use client";
-import Header from "@/app/components/Header";
-import Navbar from "@/app/components/Navbar";
+import Header from "./components/Header";
+import Navbar from "./components/Navbar";
 import IssueList from "./components/IssueList";
 import { SearchProvider } from "./context/SearchContext";
 import { FilterProvider } from "./context/FilterContext";
+import React from "react";
 
 export default function Home() {
   const handleFilterChange = (filter: any) => {

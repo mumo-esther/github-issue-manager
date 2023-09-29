@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import { postNewLabel } from "../api/githubAPI";
-import Link  from "next/link";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 function NewLabel() {
@@ -18,7 +18,7 @@ function NewLabel() {
     const { name, value } = event.target;
 
     if (name === "color" && !/^#[0-9a-fA-F]{6}$/.test(value)) {
-      return; 
+      return;
     }
 
     const colorValue = value.startsWith("#") ? value.substring(1) : value;
@@ -58,11 +58,12 @@ function NewLabel() {
       <h1 className="text-xl font-semibold mb-4">New Label</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700" htmlFor="name">
             Label Name
           </label>
           <input
             type="text"
+            id="name" 
             name="name"
             className="mt-1 p-2 w-full border rounded-md  border-blue-500 focus:ring-blue-500 focus:border-blue-900 block"
             placeholder="Enter label name"
@@ -71,6 +72,7 @@ function NewLabel() {
             required
           />
         </div>
+
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Description
@@ -112,12 +114,12 @@ function NewLabel() {
           </label>
         </div>
         <div className="flex justify-end">
-            <Link href = '/LabelsList' >
-        <button
-            className="bg-gray-100 hover:bg-gray-200 text-black px-4 py-2 border rounded-md"
-          >
-            Cancel
-          </button>
+          <Link href='/LabelsList' >
+            <button
+              className="bg-gray-100 hover:bg-gray-200 text-black px-4 py-2 border rounded-md"
+            >
+              Cancel
+            </button>
           </Link>
           <button
             type="submit"
