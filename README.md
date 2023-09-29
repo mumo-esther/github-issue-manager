@@ -161,6 +161,6 @@ Special thanks to the GitHub API for making this project possible.
 
 ## 📝 License <a name="license"></a>
 
-This project is [MIT]('./LICENSE') licensed.
+This project is [MIT]('https://github.com/mumo-esther/github-issue-manager/blob/master/LICENSE') licensed.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
