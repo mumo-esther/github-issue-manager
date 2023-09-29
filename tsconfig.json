@@ -16,6 +16,10 @@
     "jsx": "preserve",
     "module": "commonjs",
     "target": "es6",
+    "types" : [
+      "jest",
+      "node"
+    ],
     "plugins": [
       {
         "name": "next"
