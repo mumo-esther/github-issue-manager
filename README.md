@@ -27,7 +27,7 @@
 > The GitHub Issue Manager Web App is a powerful tool for managing and organizing GitHub issues, providing a user-friendly interface to streamline issue tracking and collaboration for your software projects.
 
 ### 💻 Live Demo <a name="live-demo"></a>
-[Github Issue Manager](https://github-issue-manager-fpns8y2ti-mumo-esther.vercel.app/)
+[Github Issue Manager](https://github-issue-manager-9xki06vnz-mumo-esther.vercel.app/)
 
 ## 🛠 Built With <a name="built-with"></a>
 
@@ -52,7 +52,7 @@
 
 ### Key Features <a name="key-features"></a>
 
- **Issue List:** View and filter issues based on their status, labels, assignees, and milestones.
+- **Issue List:** View and filter issues based on their status, labels, assignees, and milestones.
 - **Create New Issue:** Easily create new issues with customizable labels, descriptions, and other details.
 - **Issue Details:** Access detailed information about individual issues, including comments and assignees.
 - **Label Management:** Create, update, and delete labels for better issue categorization.
@@ -95,7 +95,9 @@ To run the project, execute the following command:
 
 ### Run tests
 
-- npm tests
+```
+  npm test
+```
 
 <!-- AUTHORS -->
 
@@ -161,6 +163,6 @@ Special thanks to the GitHub API for making this project possible.
 
 ## 📝 License <a name="license"></a>
 
-This project is [MIT]('./LICENSE') licensed.
+This project is [MIT]('https://github.com/mumo-esther/github-issue-manager/blob/master/LICENSE') licensed.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
