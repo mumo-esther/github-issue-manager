@@ -87,6 +87,16 @@ npm install
 
 ### Usage
 
+In ./src/app/api/GithubAPI fill out this credentials so you'll be able to access GitHub API
+
+```
+  GITHUB_TOKEN = "",
+
+  OWNER = " ",
+
+  REPO = " ",
+```
+
 To run the project, execute the following command:
 
 ```
