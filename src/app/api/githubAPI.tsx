@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 
 const GITHUB_TOKEN = "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";
+
 const OWNER = "mumo-esther";
 const REPO = "Js-best-practices";
 const GITHUB_API_BASE_URL = "https://api.github.com";
