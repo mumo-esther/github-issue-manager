@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-const GITHUB_TOKEN = "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";
+const GITHUB_TOKEN = "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";
 const OWNER = "mumo-esther";
 const REPO = "Js-best-practices";
 const GITHUB_API_BASE_URL = "https://api.github.com";
@@ -26,6 +26,7 @@ export async function makeGitHubRequest(
     });
 
     console.log('Response:', response.status, response.data);
+    console.log(process.env.GITHUB_TOKEN);
 
     if (response.status >= 200 && response.status < 300) {
       return response.data;
