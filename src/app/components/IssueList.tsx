@@ -20,10 +20,6 @@ function IssueList({ filter }: IssueListProps) {
       let apiUrl = "https://api.github.com/repos/mumo-esther/Js-best-practices/issues";
       const params = new URLSearchParams();
 
-      if (appliedFilter === "open" || appliedFilter === "closed") {
-        params.append("state", appliedFilter);
-      }
-
       if (selectedLabel) {
         params.append("labels", selectedLabel);
       }
@@ -36,7 +32,7 @@ function IssueList({ filter }: IssueListProps) {
         params.append("milestone", selectedMilestone);
       }
 
-      apiUrl += `?${params.toString()}`;
+      apiUrl += `?${params.toString}`;
 
       try {
         const response = await fetch(apiUrl);
@@ -44,14 +40,23 @@ function IssueList({ filter }: IssueListProps) {
           throw new Error("Network response was not ok");
         }
         const data: Issue[] = await response.json();
-        setIssues(data);
+
+        // Combine open and closed issues
+        const allIssues = data;
+
+        // Apply additional filtering based on the searchQuery
+        const filteredIssues = allIssues.filter((issue) => {
+          return issue.title.toLowerCase().includes(searchQuery.toLowerCase());
+        });
+
+        setIssues(filteredIssues);
       } catch (error) {
         console.error("Error fetching GitHub issues:", error);
       }
     };
 
     fetchIssues();
-  }, [appliedFilter, selectedLabel, selectedAssignee, selectedMilestone]);
+  }, [appliedFilter, selectedLabel, selectedAssignee, selectedMilestone, searchQuery]);
 
   useEffect(() => {
     const filteredIssues = issues.filter((issue) => {
@@ -60,18 +65,15 @@ function IssueList({ filter }: IssueListProps) {
     setIssues(filteredIssues);
   }, [searchQuery]);
 
-
-  useEffect(() => {
-    const filteredIssues = issues.filter((issue) => {
-      if (appliedFilter === "open") {
-        return issue.state === "open";
-      } else if (appliedFilter === "closed") {
-        return issue.state === "closed";
-      }
-      return true; 
-    });
-    setIssues(filteredIssues);
-  }, [appliedFilter]);
+  const filteredIssues = issues.filter((issue) => {
+    if (filter === "open") {
+      return issue.state === "open";
+    } else if (filter === "closed") {
+      return issue.state === "closed";
+    }
+    // Default: show all issues
+    return true;
+  });
 
   const handleIssueClick = (issue: Issue) => {
     setSelectedIssue(issue);
@@ -83,11 +85,9 @@ function IssueList({ filter }: IssueListProps) {
     setSelectedIssueNumber(null);
   };
 
-  const openIssues = issues.filter((issue) => issue.state === "open");
-
   return (
     <>
-      {openIssues.length === 0 ? (
+      {filteredIssues.length === 0 ? (
         <div className="border border-gray-500 rounded-md text-center pb-80 pt-0 px-0 relative">
           <IssueHeader />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -101,16 +101,16 @@ function IssueList({ filter }: IssueListProps) {
         </div>
       ) : (
         <div
-          className={`border border-gray-500 rounded-md text-center pb-${issues.length * 8
+          className={`border border-gray-500 rounded-md text-center pb-${filteredIssues.length * 8
             } pt-0 px-0 relative`}
         >
           <IssueHeader />
           <div>
-            {openIssues.map((issue, index) => (
+            {filteredIssues.map((issue, index) => (
               <div
                 key={issue.id}
-                className={`flex flex-col items-start mb-4 mt-2 ${index === openIssues.length - 1 ? "" : "border-b"
-                  } hover:bg-gray-200 p-4 rounded-md cursor-pointer`}
+                className={`flex flex-col items-start mb-4 mt-2 ${index === filteredIssues.length - 1 ? "" : "border-b"
+                  } hover-bg-gray-200 p-4 rounded-md cursor-pointer`}
                 onClick={() => handleIssueClick(issue)}
               >
                 <div className="flex items-center space-x-4">
@@ -141,13 +141,12 @@ function IssueList({ filter }: IssueListProps) {
                   ))}
                 </div>
 
-
                 {issue.assignees.length > 0 && (
                   <div className="mt-2 ml-16 space-x-2 flex flex-row">
                     <h1 className="text-sm text-blue-400">Assignees:</h1>
                     {issue.assignees.map((assignee: User) => (
                       <Image
-                      key={assignee.id}
+                        key={assignee.id}
                         src={assignee.avatar_url}
                         alt={assignee.login}
                         width={24}
@@ -187,7 +186,7 @@ function IssueList({ filter }: IssueListProps) {
         </div>
       )}
 
-      {openIssues.length === 0 && issues.length === 0 && (
+      {filteredIssues.length === 0 && issues.length === 0 && (
         <div className="border border-gray-500 rounded-md text-center pb-80 pt-0 px-0 relative">
           <IssueHeader />
           <div className="absolute inset-0 flex flex-col items-center justify-center">

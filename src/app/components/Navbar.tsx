@@ -18,7 +18,7 @@ function Navbar({ onFilterChange }: NavbarProps) {
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="relative">
-            <select
+          {/**   <select
               className="bg-gray-200 text-black text-center rounded-md py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={filter}
               onChange={handleFilterChange}
@@ -27,6 +27,7 @@ function Navbar({ onFilterChange }: NavbarProps) {
               <option value="open">Open Issues</option>
               <option value="closed">Closed Issues</option>
             </select>
+            */}
           </div>
           <div className="flex items-center space-x-4">
             <Link href="/MilestonesList">
