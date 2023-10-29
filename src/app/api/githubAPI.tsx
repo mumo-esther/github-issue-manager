@@ -1,10 +1,9 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-const GITHUB_TOKEN = "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";
-
-const OWNER = "mumo-esther";
-const REPO = "Js-best-practices";
-const GITHUB_API_BASE_URL = "https://api.github.com";
+const GITHUB_TOKEN= process.env.NEXT_PUBLIC_Github_token
+const OWNER = process.env.NEXT_PUBLIC_Owner;
+const REPO = process.env.NEXT_PUBLIC_Repo;
+const GITHUB_API_BASE_URL = process.env.NEXT_PUBLIC_Api_Base_URL;
 
 export async function makeGitHubRequest(
   endpoint: string,
@@ -27,7 +26,6 @@ export async function makeGitHubRequest(
     });
 
     console.log('Response:', response.status, response.data);
-    console.log(process.env.GITHUB_TOKEN);
 
     if (response.status >= 200 && response.status < 300) {
       return response.data;
@@ -35,12 +33,11 @@ export async function makeGitHubRequest(
       console.error(`GitHub request failed with status: ${response.status}`);
       throw new Error(`GitHub request failed with status: ${response.status}`);
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error(`Error making GitHub request for ${endpoint}:`, error);
     throw error;
   }
 }
-
 
 {/**Issues */ }
 export async function fetchGitHubIssues() {

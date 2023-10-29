@@ -13,7 +13,7 @@ function IssueList({ filter }: IssueListProps) {
     null
   );
   const { searchQuery } = useSearchContext();
-  const { filter: appliedFilter, selectedLabel, selectedAssignee, selectedMilestone } = useFilterContext();
+  const { filter: appliedFilter, selectedLabel, selectedAssignee, selectedMilestone} = useFilterContext();
 
   useEffect(() => {
     const fetchIssues = async () => {
@@ -52,6 +52,26 @@ function IssueList({ filter }: IssueListProps) {
 
     fetchIssues();
   }, [appliedFilter, selectedLabel, selectedAssignee, selectedMilestone]);
+
+  useEffect(() => {
+    const filteredIssues = issues.filter((issue) => {
+      return issue.title.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+    setIssues(filteredIssues);
+  }, [searchQuery]);
+
+
+  useEffect(() => {
+    const filteredIssues = issues.filter((issue) => {
+      if (appliedFilter === "open") {
+        return issue.state === "open";
+      } else if (appliedFilter === "closed") {
+        return issue.state === "closed";
+      }
+      return true; 
+    });
+    setIssues(filteredIssues);
+  }, [appliedFilter]);
 
   const handleIssueClick = (issue: Issue) => {
     setSelectedIssue(issue);
@@ -137,8 +157,6 @@ function IssueList({ filter }: IssueListProps) {
                     ))}
                   </div>
                 )}
-
-
                 <div className="mt-2 ml-16 flex items-center space-x-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

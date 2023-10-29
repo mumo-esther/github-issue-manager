@@ -4,7 +4,7 @@ import { useSearchContext } from "../context/SearchContext";
 
 function SearchBar() {
   const { searchQuery, setSearchQuery } = useSearchContext();
-
+  
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
